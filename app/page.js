@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Card from "./Components/Card";
+import ProductCard from "./Components/ProductCard";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-8 px-4">
       {products.map((product) => (
-        <Card key={product.id} product={product} />
+        <ProductCard key={product.id} product={product} />
       ))}
     </div>
   );
