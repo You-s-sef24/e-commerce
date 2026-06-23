@@ -6,6 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { toast } from "sonner";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { KeyIcon, LockIcon, MailIcon } from "lucide-react";
+import { Label } from "@/components/ui/label";
 
 export default function SignupPage() {
     const [formData, setFormData] = useState({
@@ -44,28 +47,30 @@ export default function SignupPage() {
                     <CardTitle className="text-xl text-blue-600">Sign in</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
-                        <Field className="flex flex-col gap-1" data-invalid={check && !formData.email}>
-                            <FieldLabel htmlFor="email">Email</FieldLabel>
-                            <Input
+                    <form onSubmit={handleSubmit} className="flex flex-col">
+                        <Label className={"mb-2"}>Email</Label>
+                        <InputGroup data-invalid={check && !formData.email}>
+                            <InputGroupInput
                                 id="email"
                                 type="email"
-                                placeholder="youssef@company.com"
+                                placeholder="Enter your email"
                                 value={formData.email}
                                 onChange={(e) => {
                                     setFormData({ ...formData, email: e.target.value });
                                 }}
                                 aria-invalid={check && !formData.email}
                             />
-                        </Field>
+                            <InputGroupAddon>
+                                <MailIcon />
+                            </InputGroupAddon>
+                        </InputGroup>
 
-                        <Field className="flex flex-col gap-1 flex-1" data-invalid={check && !formData.pass}>
-                            <FieldLabel htmlFor="pass">Password</FieldLabel>
-                            <Input
+                        <Label htmlFor="pass" className={"my-5 mb-2"}>Password</Label>
+                        <InputGroup data-invalid={check && !formData.pass}>
+                            <InputGroupInput
                                 id="pass"
                                 type="password"
-                                placeholder="********"
+                                placeholder="Enter your password"
                                 value={formData.pass}
                                 onChange={(e) => {
                                     setFormData({ ...formData, pass: e.target.value });
@@ -73,16 +78,18 @@ export default function SignupPage() {
                                 minLength={8}
                                 aria-invalid={check && !formData.pass}
                             />
-                        </Field>
+                            <InputGroupAddon>
+                                <LockIcon />
+                            </InputGroupAddon>
+                        </InputGroup>
 
                         <Button
                             type="submit"
                             disabled={submitted}
-                            className="bg-blue-600 hover:bg-blue-800 mt-2"
+                            className="bg-blue-600 hover:bg-blue-800 mt-2 cursor-pointer"
                         >
                             Sign in
                         </Button>
-
                     </form>
                 </CardContent>
             </Card>
