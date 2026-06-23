@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function ProductCard({ product }) {
   const { thumbnail, title, rating, price } = product;
@@ -32,7 +33,14 @@ export default function ProductCard({ product }) {
         <p className="text-blue-600 text-xl font-semibold mt-2">${price}</p>
       </CardContent>
       <CardFooter>
-        <Button className="bg-blue-600 hover:bg-blue-800 w-full cursor-pointer">Add to cart</Button>
+        <Button
+          className="bg-blue-600 hover:bg-blue-800 w-full cursor-pointer"
+          onClick={() => {
+            toast.success("item added to cart");
+          }}
+        >
+          Add to cart
+        </Button>
       </CardFooter>
     </Card>
   );
