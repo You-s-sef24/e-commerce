@@ -18,10 +18,10 @@ export default function ProductCard({ product }) {
         alt={title}
         width={320}
         height={192}
-        className="object-cover w-full h-48"
+        className="object-contain w-full h-48"
       />
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className={"font-semibold"}>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div>

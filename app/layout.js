@@ -1,8 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "./Components/AppSidebar";
-import Link from "next/link";
+import Navbar from "./Components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,23 +23,9 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex">
-        <SidebarProvider>
-          <div className="flex flex-col flex-1">
-            <header className="border-b px-4 py-3 flex items-center justify-between w-full">
-              <div className="flex items-center gap-3">
-                <SidebarTrigger className={"text-blue-600 hover:text-blue-800"}/>
-                <Link href="/" className="font-bold text-blue-600 text-lg">Shopify</Link>
-              </div>
-            </header>
-
-            <div className="flex flex-1">
-              <AppSidebar />
-              <main className="flex-1 p-4">{children}</main>
-            </div>
-
-          </div>
-        </SidebarProvider>
+      <body className="min-h-full flex flex-col">
+        <Navbar />
+        {children}
       </body>
     </html>
   );
