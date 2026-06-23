@@ -8,13 +8,13 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import { Home, ShoppingBag, Info } from "lucide-react";
+import { Home, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 
 const links = [
   { label: "Home", href: "/", icon: Home },
-  { label: "Products", href: "/products", icon: ShoppingBag },
-  { label: "About", href: "/about", icon: Info },
+  { label: "My Cart", href: "/cart", icon: ShoppingCart },
+  { label: "Sign up", href: "/signup", icon: User },
 ];
 
 export function AppSidebar() {
@@ -22,11 +22,17 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>MyStore</SidebarGroupLabel>
+          <SidebarGroupLabel className={"text-blue-600 font-bold text-xl"}>
+            Shopify
+          </SidebarGroupLabel>
+          <hr />
           <SidebarMenu>
             {links.map((link) => (
               <SidebarMenuItem key={link.href}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton
+                  asChild
+                  className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                >
                   <Link href={link.href}>
                     <link.icon />
                     <span>{link.label}</span>
