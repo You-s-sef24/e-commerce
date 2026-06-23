@@ -19,7 +19,7 @@ export default function Navbar() {
   function handleSearch(e) {
     e.preventDefault();
     if (!search.trim()) return;
-    router.push(`/search?q=${encodeURIComponent(search)}`);
+    router.push(`/search/${encodeURIComponent(search)}`);
   }
 
   return (
