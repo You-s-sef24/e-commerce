@@ -7,6 +7,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
+import { z } from "zod";
+import Link from "next/link";
+import { ShoppingCartIcon } from "lucide-react";
+
+const SignupSchema = z.object({
+    firstName: z.string().min(1, "First Name is required"),
+    lastName: z.string().min(1, "Last Name is required"),
+    address: z.string().min(1, "Address Name is required"),
+    email: z.string().min(1, "Email is required").email(),
+    birthdate: z.string().min(1, "Birthdate is required"),
+    phone: z.string().min(1, "Phone number is required").length(11, "Invalid phone number").startsWith("01", "Phone number must start with 01"),
+    pass: z.string().min(1, "Password is required").min(8, "Password Must be at least 8 characters"),
+    confPass: z.string().min(1, "Password is required").min(8, "Password Must be at least 8 characters"),
+    terms: z.literal(true),
+}).refine((data) => data.pass === data.confPass, {
+    message: "Passwords don't match",
+    path: ["confPass"],
+})
 
 export default function SignupPage() {
     const [formData, setFormData] = useState({
@@ -24,29 +42,13 @@ export default function SignupPage() {
         e.preventDefault();
         setCheck(true);
 
-        const isEmpty = Object.values(formData).some((v) => v === "");
-        if (isEmpty) {
-            toast.error("Please fill empty fields");
+        const result = SignupSchema.safeParse(formData)
+        if (!result.success) {
+            const firstError = result.error.issues[0]?.message || "Please fix the errors";
+            toast.error(firstError);
             return;
         }
 
-        if (!formData.terms) {
-            toast.error("Please accept the terms");
-            return;
-        }
-
-        if (formData.phone.length < 11 || !formData.phone.startsWith("01")) {
-            toast.error("Invalid phone number");
-            return;
-        }
-        if (formData.pass.length < 8) {
-            toast.error("Password too short");
-            return;
-        }
-        if (formData.pass !== formData.confPass) {
-            toast.error("Passwords doesn't match");
-            return;
-        }
         setSubmitted(true);
         toast.success("Account created Successfully!");
         setCheck(false);
@@ -54,18 +56,24 @@ export default function SignupPage() {
     }
 
     return (
-        <div className="flex justify-center items-center min-h-screen">
-            <Card className="w-full max-w-md shadow-lg">
+        <div className="flex justify-center items-center min-h-screen bg-blue-100">
+            <Card className="w-full max-w-md shadow-2xl">
                 <CardHeader>
-                    <CardTitle className="text-xl text-blue-600">Create Account</CardTitle>
+                    <CardTitle className="flex items-center justify-center gap-2 font-bold text-3xl text-blue-600 mb-3">
+                        <ShoppingCartIcon />
+                        Shopify
+                    </CardTitle>
+                    <CardTitle className="text-center font-bold text-3xl">Create your account</CardTitle>
+                    <p className="text-center  text-neutral-600 mb-3">Join millions of happy shoppers</p>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
 
                         <div className="flex gap-3">
                             <Field className="flex flex-col gap-1 flex-1" data-invalid={check && !formData.firstName}>
                                 <FieldLabel htmlFor="firstName">First Name</FieldLabel>
                                 <Input
+                                    className="focus:!border-blue-400 focus:!ring-blue-400"
                                     id="firstName"
                                     placeholder="Youssef"
                                     value={formData.firstName}
@@ -76,6 +84,7 @@ export default function SignupPage() {
                             <Field className="flex flex-col gap-1 flex-1" data-invalid={check && !formData.lastName}>
                                 <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
                                 <Input
+                                    className="focus:!border-blue-400 focus:!ring-blue-400"
                                     id="lastName"
                                     placeholder="Mahmoud"
                                     value={formData.lastName}
@@ -89,6 +98,7 @@ export default function SignupPage() {
                             <Field className="flex flex-col gap-1 flex-1" data-invalid={check && !formData.phone}>
                                 <FieldLabel htmlFor="phone">Phone Number</FieldLabel>
                                 <Input
+                                    className="focus:!border-blue-400 focus:!ring-blue-400"
                                     id="phone"
                                     type="tel"
                                     placeholder="01115658096"
@@ -101,6 +111,7 @@ export default function SignupPage() {
                             <Field className="flex flex-col gap-1 flex-1" data-invalid={check && !formData.birthdate}>
                                 <FieldLabel htmlFor="birthdate">Birthdate</FieldLabel>
                                 <Input
+                                    className="focus:!border-blue-400 focus:!ring-blue-400"
                                     id="birthdate"
                                     type="date"
                                     value={formData.birthdate}
@@ -113,6 +124,7 @@ export default function SignupPage() {
                         <Field className="flex flex-col gap-1" data-invalid={check && !formData.email}>
                             <FieldLabel htmlFor="email">Email</FieldLabel>
                             <Input
+                                className="focus:!border-blue-400 focus:!ring-blue-400"
                                 id="email"
                                 type="email"
                                 placeholder="youssef@company.com"
@@ -126,6 +138,7 @@ export default function SignupPage() {
                             <Field className="flex flex-col gap-1 flex-1" data-invalid={check && !formData.pass}>
                                 <FieldLabel htmlFor="pass">Password</FieldLabel>
                                 <Input
+                                    className="focus:!border-blue-400 focus:!ring-blue-400"
                                     id="pass"
                                     type={"password"}
                                     onChange={update("pass")}
@@ -139,6 +152,7 @@ export default function SignupPage() {
                                 <Field className="flex flex-col gap-1 flex-1" data-invalid={check && !formData.confPass}>
                                     <FieldLabel htmlFor="confPass">Confirm Password</FieldLabel>
                                     <Input
+                                        className="focus:!border-blue-400 focus:!ring-blue-400"
                                         id="confPass"
                                         type={"password"}
                                         onChange={update("confPass")}
@@ -153,7 +167,7 @@ export default function SignupPage() {
                         <Field className="flex flex-col gap-1" data-invalid={check && !formData.address}>
                             <FieldLabel htmlFor="address">Address</FieldLabel>
                             <Input
-
+                                className="focus:!border-blue-400 focus:!ring-blue-400"
                                 id="address"
                                 placeholder="El Haram - Giza"
                                 value={formData.address}
@@ -171,7 +185,16 @@ export default function SignupPage() {
                                 aria-invalid={check && !formData.terms}
                             />
                             <FieldLabel htmlFor="terms" className="cursor-pointer">
-                                Accept terms and cookies
+                                <span className="text-sm text-gray-500 leading-relaxed">
+                                    I agree to the{" "}
+                                    <Link href={"/terms"} className="text-blue-600 font-semibold hover:underline">
+                                        Terms of Service
+                                    </Link>
+                                    {" "}and{" "}
+                                    <Link href={"/privacy"} className="text-blue-600 font-semibold hover:underline">
+                                        Privacy Policy
+                                    </Link>
+                                </span>
                             </FieldLabel>
                         </Field>
 
@@ -184,6 +207,11 @@ export default function SignupPage() {
                         </Button>
 
                     </form>
+
+                    <p class="text-center text-sm text-gray-500 mt-6">
+                        Already have an account?{" "}
+                        <Link href={"/signin"} class="text-blue-600 font-bold hover:underline">Sign In</Link>
+                    </p>
                 </CardContent>
             </Card>
         </div>
