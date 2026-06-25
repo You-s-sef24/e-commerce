@@ -1,12 +1,13 @@
 "use client";
 
-import { Field, FieldLabel } from "@/components/ui/field";
+import { Button } from "@/components/ui/button";
+import { Field } from "@/components/ui/field";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { SearchIcon, ShoppingCart } from "lucide-react";
+import { SearchIcon, ShoppingCart, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -47,24 +48,19 @@ export default function Navbar() {
       <>
         <div className="flex items-center gap-2">
           <Link href={"/cart"}>
-            <div className="flex items-center border text-white border-blue-600 rounded-lg bg-blue-600 hover:bg-blue-800 gap-1 p-3 transition-all duration-30">
+            <Button className={" bg-blue-600 hover:bg-blue-800 cursor-pointer"}>
               <ShoppingCart />
-            </div>
+            </Button>
           </Link>
 
-          {pathname !== "/signin" && (
+          {pathname !== "/signin" && pathname !== "/signup" && (
             <Link href={"/signin"}>
-              <div className="flex items-center border text-blue-600 border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white gap-1 p-3 transition-all duration-30">
+              <Button
+                className={"bg-blue-600 hover:bg-blue-800 cursor-pointer"}
+              >
+                <UserIcon />
                 Sign in
-              </div>
-            </Link>
-          )}
-
-          {pathname == "/signin" && (
-            <Link href={"/signup"}>
-              <div className="flex items-center border text-blue-600 border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white gap-1 p-3 transition-all duration-30">
-                Sign up
-              </div>
+              </Button>
             </Link>
           )}
         </div>
