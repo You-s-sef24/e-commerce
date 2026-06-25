@@ -48,7 +48,7 @@ export default function TopRatedSection() {
           {topRated.map((product) => (
             <Link href={`/all-products/${product.id}`} key={product.id}>
               <figure className="relative flex flex-col shrink-0 hover:bg-neutral-100 rounded-2xl transition-all cursor-pointer p-2 whitespace-normal w-[220px] h-full">
-                <div className="overflow-hidden rounded-md">
+                <div className="overflow-hidden rounded-md flex items-center justify-center">
                   <Image
                     src={product.thumbnail}
                     alt={product.title}

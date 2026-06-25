@@ -1,47 +1,68 @@
 import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { StarIcon } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
 
 export default function ProductCard({ product }) {
-  const { thumbnail, title, rating, price } = product;
+  const { thumbnail, title, rating, price, discountPercentage, category, id } =
+    product;
 
   return (
-    <Card className="w-80">
-      <Image
-        src={thumbnail}
-        alt={title}
-        width={320}
-        height={192}
-        className="object-contain w-full h-48"
-      />
-      <CardHeader>
-        <CardTitle className={"font-semibold"}>{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div>
-          {"★".repeat(Math.floor(rating))}
-          {"☆".repeat(5 - Math.floor(rating))}
-          <span className="text-gray-500 text-sm ml-1">({rating})</span>
+    <Link href={`/all-products/${id}`}>
+      <figure className="relative flex flex-col hover:bg-neutral-100 rounded-2xl transition-all cursor-pointer p-2 w-80 h-full border">
+        <div className="overflow-hidden rounded-md flex items-center justify-center">
+          <Image
+            src={thumbnail}
+            alt={title}
+            className="aspect-[3/4] h-fit w-fit object-contain"
+            width={300}
+            height={400}
+          />
         </div>
-        <p className="text-blue-600 text-xl font-semibold mt-2">${price}</p>
-      </CardContent>
-      <CardFooter>
-        <Button
-          className="bg-blue-600 hover:bg-blue-800 w-full cursor-pointer"
-          onClick={() => {
-            toast.success("item added to cart");
-          }}
-        >
-          Add to cart
-        </Button>
-      </CardFooter>
-    </Card>
+        <span className="absolute top-2 end-2 bg-red-500 text-white rounded-2xl px-2 text-sm">
+          -{discountPercentage}%
+        </span>
+        <figcaption className="flex flex-col flex-1 pt-2">
+          <p className="text-blue-600 capitalize">{category}</p>
+          <h3 className="font-bold line-clamp-2 w-[200px]">{title}</h3>
+
+          <div className="flex items-center gap-1 mt-2">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <StarIcon
+                key={star}
+                size={14}
+                className={
+                  star <= Math.round(rating)
+                    ? "text-yellow-400 fill-yellow-400"
+                    : "text-yellow-400 fill-transparent"
+                }
+              />
+            ))}
+            <span className="text-sm text-neutral-500 ml-1">
+              {rating.toFixed(1)}
+            </span>
+          </div>
+
+          <h3 className="font-bold text-lg mb-3">
+            ${price.toFixed(2)}{" "}
+            <span className="text-neutral-500 line-through text-sm font-normal">
+              ${(price / (1 - discountPercentage / 100)).toFixed(2)}
+            </span>
+          </h3>
+
+          <div className="flex justify-center mt-auto">
+            <button
+              className="bg-blue-600 hover:bg-blue-800 text-white cursor-pointer w-full rounded-md py-2 text-sm font-medium transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                toast.success("Item added to cart");
+              }}
+            >
+              Add to Cart
+            </button>
+          </div>
+        </figcaption>
+      </figure>
+    </Link>
   );
 }
