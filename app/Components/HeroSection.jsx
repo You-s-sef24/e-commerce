@@ -22,7 +22,7 @@ export default function HeroSection() {
         </p>
         <div className="flex">
           <Link
-            href={"/all-priducts"}
+            href={"/all-products"}
             className="flex items-center font-bold text-white bg-blue-600 hover:bg-blue-800 cursor-pointer text-2xl py-4 px-5 gap-1 transition-all rounded-2xl"
           >
             Shop Now <MoveRightIcon />
