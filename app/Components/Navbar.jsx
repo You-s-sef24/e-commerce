@@ -5,6 +5,7 @@ import { Field } from "@/components/ui/field";
 import {
   InputGroup,
   InputGroupAddon,
+  InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { SearchIcon, ShoppingCart, UserIcon } from "lucide-react";
@@ -24,47 +25,48 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="sticky backdrop-blur-sm top-0 flex justify-between items-center bg-white/80 font-bold text-gray-500 p-3 z-50 border-b border-gray-200 dark:border-neutral-700 shadow-lg">
-      <Link href={"/"} className="text-2xl text-blue-600">
-        Shopify
-      </Link>
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b shadow-lg">
+      <div className="flex justify-between items-center px-4 py-3">
+        <Link href="/" className="text-2xl font-bold text-blue-600">
+          Shopify
+        </Link>
 
-      <form onSubmit={handleSearch}>
-        <Field className="w-64 md:w-80 lg:w-150">
-          <InputGroup>
-            <InputGroupInput
-              id="inline-start-input"
-              placeholder="Search..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <InputGroupAddon align="inline-start">
-              <SearchIcon className="text-muted-foreground" />
-            </InputGroupAddon>
-          </InputGroup>
-        </Field>
-      </form>
-
-      <>
         <div className="flex items-center gap-2">
-          <Link href={"/cart"}>
-            <Button className={" bg-blue-600 hover:bg-blue-800 cursor-pointer"}>
+          <Link href="/cart">
+            <Button className="bg-blue-600 hover:bg-blue-800 cursor-pointer">
               <ShoppingCart />
             </Button>
           </Link>
-
           {pathname !== "/signin" && pathname !== "/signup" && (
-            <Link href={"/signin"}>
-              <Button
-                className={"bg-blue-600 hover:bg-blue-800 cursor-pointer"}
-              >
+            <Link href="/signin">
+              <Button className="bg-blue-600 hover:bg-blue-800 cursor-pointer">
                 <UserIcon />
-                Sign in
+                <span className="hidden sm:inline">Sign in</span>
               </Button>
             </Link>
           )}
         </div>
-      </>
+      </div>
+
+      <div className="px-4 pb-3">
+        <form onSubmit={handleSearch}>
+          <InputGroup className="focus-within:!border-blue-400 focus-within:!ring-blue-400">
+            <InputGroupInput
+              placeholder="Search products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton
+                type="submit"
+                className="bg-blue-600 text-white hover:bg-blue-800 hover:text-white cursor-pointer"
+              >
+                Search
+              </InputGroupButton>
+            </InputGroupAddon>
+          </InputGroup>
+        </form>
+      </div>
     </nav>
   );
 }
