@@ -7,7 +7,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-export default function BreadcrumbBasic({ links, currentPage }) {
+export default function BreadcrumbLinks({ links, currentPage }) {
   return (
     <Breadcrumb className={"mb-5 ms-3"}>
       <BreadcrumbList>
