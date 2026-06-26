@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ProductCard from "../Components/ProductCard";
 import axios from "axios";
 import ProductCardSkeleton from "../Components/ProductCardSkeleton";
-import BreadcrumbBasic from "../Components/BreadcrumbLinks";
+import BreadcrumbLinks from "../Components/BreadcrumbLinks";
 
 
 export default function AllProductsPage() {
@@ -42,7 +42,7 @@ export default function AllProductsPage() {
 
   return (
     <div className="my-8 px-4">
-      <BreadcrumbBasic links={[{ name: "Home", url: "/" }]} currentPage={"All Products"}/>
+      <BreadcrumbLinks links={[{ name: "Home", url: "/" }]} currentPage={"Products"}/>
       <h3 className="text-2xl font-bold ms-3">All Products</h3>
       <p className="text-neutral-500 ms-3 mb-5">{total} products found</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-4">
