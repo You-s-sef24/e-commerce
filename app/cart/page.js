@@ -11,11 +11,13 @@ import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import CartItem from "../Components/CartItemCard";
 import { CartContext } from "../Contexts/CartContext";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const { cart, setCart } = useContext(CartContext);
   const [coupon, setCoupon] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
+  const router = useRouter();
 
   function handleQtyChange(id, newQty) {
     if (newQty < 1) {
@@ -166,7 +168,7 @@ export default function CartPage() {
 
                   <Button
                     className="w-full gap-2 mt-1 cursor-pointer bg-blue-600 hover:bg-blue-800"
-                    onClick={() => toast.success("Proceeding to checkout...")}
+                    onClick={() => router.push("/checkout")}
                   >
                     Checkout
                     <ArrowRight size={16} />
