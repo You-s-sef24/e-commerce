@@ -15,7 +15,10 @@ export default function BreadcrumbLinks({ links, currentPage }) {
           return (
             <>
               <BreadcrumbItem key={link.name}>
-                <BreadcrumbLink className={"text-lg"} href={link.url}>{link.name}</BreadcrumbLink>
+                <BreadcrumbLink className={"text-lg"} href={link.url}>
+                  {" "}
+                  {link.name}{" "}
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
             </>

@@ -3,7 +3,7 @@
 import axios from "axios";
 import { StarIcon } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import TopRatedSkeleton from "./TopRatedSkeleton";
 import Autoplay from "embla-carousel-autoplay";
@@ -14,10 +14,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { CartContext } from "../Contexts/CartContext";
+import { toast } from "sonner";
 
 export default function TopRatedSection() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { cart, setCart } = useContext(CartContext);
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
 
   useEffect(() => {
@@ -36,6 +39,21 @@ export default function TopRatedSection() {
   const topRated = useMemo(() => {
     return [...products].sort((a, b) => b.rating - a.rating).slice(0, 8);
   }, [products]);
+
+  function handleAddToCart(e, product) {
+    e.preventDefault();
+    const exists = cart.find((item) => item.id === product.id);
+    if (exists) {
+      setCart(
+        cart.map((item) =>
+          item.id === product.id ? { ...item, qty: item.qty + 1 } : item,
+        ),
+      );
+    } else {
+      setCart([...cart, { ...product, qty: 1 }]);
+    }
+    toast.success("Item added to cart");
+  }
 
   if (loading) {
     return <TopRatedSkeleton />;
@@ -113,7 +131,12 @@ export default function TopRatedSection() {
                     </h3>
 
                     <div className="flex justify-center mt-auto">
-                      <button className="bg-blue-600 hover:bg-blue-800 text-white cursor-pointer w-full rounded-md py-2 text-sm font-medium transition-colors">
+                      <button
+                        className="bg-blue-600 hover:bg-blue-800 text-white cursor-pointer w-full rounded-md py-2 text-sm font-medium transition-colors"
+                        onClick={(e) => {
+                          handleAddToCart(e, product);
+                        }}
+                      >
                         Add to Cart
                       </button>
                     </div>

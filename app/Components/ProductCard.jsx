@@ -2,10 +2,28 @@ import Image from "next/image";
 import { StarIcon } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useContext } from "react";
+import { CartContext } from "../Contexts/CartContext";
 
 export default function ProductCard({ product }) {
+  const { cart, setCart } = useContext(CartContext);
   const { thumbnail, title, rating, price, discountPercentage, category, id } =
     product;
+
+  function handleAddToCart(e) {
+    e.preventDefault();
+    const exists = cart.find((item) => item.id === id);
+    if (exists) {
+      setCart(
+        cart.map((item) =>
+          item.id === id ? { ...item, qty: item.qty + 1 } : item,
+        ),
+      );
+    } else {
+      setCart([...cart, { ...product, qty: 1 }]);
+    }
+    toast.success("Item added to cart");
+  }
 
   return (
     <Link href={`/all-products/${id}`}>
@@ -54,8 +72,7 @@ export default function ProductCard({ product }) {
             <button
               className="bg-blue-600 hover:bg-blue-800 text-white cursor-pointer w-full rounded-md py-2 text-sm font-medium transition-colors"
               onClick={(e) => {
-                e.preventDefault();
-                toast.success("Item added to cart");
+                handleAddToCart(e);
               }}
             >
               Add to Cart
